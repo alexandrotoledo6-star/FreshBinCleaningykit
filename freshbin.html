@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreshBin — Clean Bins, Clean Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0f0d;
+    --surface: #111a14;
+    --surface2: #162019;
+    --border: rgba(255,255,255,0.07);
+    --green: #3dffa0;
+    --green-dim: #27c97a;
+    --blue: #38d4f5;
+    --white: #f0f7f2;
+    --muted: #7a9988;
+    --card-bg: #121c15;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 5vw;
+    background: rgba(10,15,13,0.7);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.4rem;
+    letter-spacing: -0.5px;
+    color: var(--white);
+  }
+  .logo span { color: var(--green); }
+  .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.92rem; font-weight: 400;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--green); color: #0a0f0d !important;
+    padding: 0.5rem 1.2rem; border-radius: 100px;
+    font-weight: 500 !important; font-size: 0.88rem !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.85 !important; color: #0a0f0d !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 9rem 5vw 6rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute; top: -10%; left: -5%;
+    width: 700px; height: 700px;
+    background: radial-gradient(ellipse, rgba(61,255,160,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-glow2 {
+    position: absolute; bottom: -10%; right: -5%;
+    width: 500px; height: 500px;
+    background: radial-gradient(ellipse, rgba(56,212,245,0.09) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: center; width: 100%;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(61,255,160,0.1); border: 1px solid rgba(61,255,160,0.25);
+    color: var(--green); padding: 0.35rem 1rem; border-radius: 100px;
+    font-size: 0.82rem; font-weight: 500; margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .badge-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: clamp(2.4rem, 4.5vw, 4rem);
+    line-height: 1.08; letter-spacing: -1.5px;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+  h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--green) 0%, var(--blue) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    margin-top: 1.4rem; font-size: 1.08rem;
+    color: var(--muted); max-width: 440px;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; margin-top: 2.4rem; flex-wrap: wrap;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--green); color: #0a0f0d;
+    border: none; padding: 0.85rem 2rem;
+    border-radius: 100px; font-size: 0.95rem; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(61,255,160,0.3);
+    text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 40px rgba(61,255,160,0.45);
+  }
+  .btn-secondary {
+    background: transparent; color: var(--white);
+    border: 1px solid var(--border); padding: 0.85rem 2rem;
+    border-radius: 100px; font-size: 0.95rem; font-weight: 400;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-secondary:hover { border-color: var(--green); background: rgba(61,255,160,0.05); }
+
+  /* Hero visual */
+  .hero-visual {
+    display: flex; justify-content: center; align-items: center;
+    animation: fadeUp 0.8s 0.2s ease both;
+    position: relative;
+  }
+  .bin-graphic {
+    width: 240px; height: 280px; position: relative;
+    filter: drop-shadow(0 0 60px rgba(61,255,160,0.25));
+  }
+  .bin-body {
+    width: 180px; height: 210px;
+    background: linear-gradient(160deg, #1e3326 0%, #112018 100%);
+    border: 2px solid rgba(61,255,160,0.25);
+    border-radius: 18px 18px 28px 28px;
+    margin: 0 auto; position: relative;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 16px;
+  }
+  .bin-stripe {
+    width: 120px; height: 5px; border-radius: 3px;
+    background: rgba(61,255,160,0.35);
+    animation: shimmer 2.5s infinite alternate;
+  }
+  .bin-stripe:nth-child(2) { width: 90px; animation-delay: 0.3s; }
+  .bin-stripe:nth-child(3) { width: 110px; animation-delay: 0.6s; }
+  @keyframes shimmer {
+    from { opacity: 0.3; } to { opacity: 0.8; }
+  }
+  .bin-lid {
+    width: 200px; height: 30px;
+    background: linear-gradient(160deg, #243b2d 0%, #162319 100%);
+    border: 2px solid rgba(61,255,160,0.3);
+    border-radius: 12px; margin: 0 auto 8px;
+  }
+  .bin-handle {
+    width: 60px; height: 16px;
+    background: #1e3326; border: 2px solid rgba(61,255,160,0.3);
+    border-radius: 20px; margin: 0 auto 0;
+  }
+  /* floating drops */
+  .drop {
+    position: absolute;
+    width: 10px; height: 14px;
+    background: linear-gradient(180deg, var(--blue), rgba(56,212,245,0.3));
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: drip 3s infinite;
+  }
+  .drop:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+  .drop:nth-child(2) { top: 40%; right: 8%; animation-delay: 1s; width: 7px; height: 10px; }
+  .drop:nth-child(3) { top: 65%; left: 15%; animation-delay: 2s; width: 8px; height: 12px; }
+  @keyframes drip {
+    0% { transform: translateY(0) scaleY(1); opacity: 0.8; }
+    100% { transform: translateY(30px) scaleY(0.5); opacity: 0; }
+  }
+
+  .hero-stats {
+    display: flex; gap: 2.5rem; margin-top: 3rem;
+    animation: fadeUp 0.7s 0.4s ease both;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 1.7rem; color: var(--green);
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.1rem; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION COMMONS ── */
+  section { padding: 6rem 5vw; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--green); margin-bottom: 0.8rem;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: clamp(1.8rem, 3vw, 2.6rem);
+    letter-spacing: -0.8px; line-height: 1.15;
+  }
+  .section-sub {
+    color: var(--muted); max-width: 500px;
+    font-size: 1rem; margin-top: 0.7rem;
+  }
+
+  /* ── SERVICES ── */
+  .services { background: var(--surface); }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5px;
+    margin-top: 3.5rem;
+    border: 1.5px solid var(--border); border-radius: 20px; overflow: hidden;
+  }
+  .service-card {
+    background: var(--card-bg);
+    padding: 2.4rem 2rem;
+    transition: background 0.3s;
+    cursor: default; position: relative;
+  }
+  .service-card:hover { background: #162019; }
+  .service-card::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--green), var(--blue));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .service-card:hover::after { opacity: 1; }
+  .svc-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: rgba(61,255,160,0.08); border: 1px solid rgba(61,255,160,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 1.4rem;
+  }
+  .svc-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600; font-size: 1.15rem; margin-bottom: 0.6rem;
+  }
+  .svc-desc { color: var(--muted); font-size: 0.93rem; line-height: 1.65; }
+  .svc-tag {
+    display: inline-block; margin-top: 1.2rem;
+    font-size: 0.75rem; color: var(--green);
+    border: 1px solid rgba(61,255,160,0.3); border-radius: 100px;
+    padding: 0.25rem 0.8rem;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .steps {
+    display: flex; gap: 0; margin-top: 3.5rem;
+    position: relative;
+  }
+  .steps::before {
+    content: '';
+    position: absolute; top: 2rem; left: calc(16.6%);
+    right: calc(16.6%); height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green), var(--blue), transparent);
+  }
+  .step {
+    flex: 1; text-align: center; padding: 0 1rem; position: relative;
+  }
+  .step-num {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--green), var(--blue));
+    color: #0a0f0d; font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.2rem; position: relative; z-index: 1;
+  }
+  .step-title {
+    font-family: 'Syne', sans-serif; font-weight: 600;
+    font-size: 1rem; margin-bottom: 0.5rem;
+  }
+  .step-desc { color: var(--muted); font-size: 0.88rem; }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials { background: var(--surface); }
+  .testi-grid {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .testi-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 18px; padding: 2rem;
+    transition: transform 0.25s, border-color 0.25s;
+  }
+  .testi-card:hover { transform: translateY(-4px); border-color: rgba(61,255,160,0.2); }
+  .stars { color: var(--green); font-size: 0.95rem; letter-spacing: 1px; margin-bottom: 1rem; }
+  .testi-text { color: var(--muted); font-size: 0.95rem; line-height: 1.7; }
+  .testi-author {
+    display: flex; align-items: center; gap: 0.9rem; margin-top: 1.5rem;
+  }
+  .avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 0.9rem; color: #0a0f0d;
+    flex-shrink: 0;
+  }
+  .author-name { font-weight: 500; font-size: 0.9rem; }
+  .author-loc { color: var(--muted); font-size: 0.8rem; }
+
+  /* ── PRICING ── */
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem;
+    margin-top: 3.5rem; align-items: end;
+  }
+  .price-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 22px; padding: 2.2rem;
+    transition: transform 0.25s;
+  }
+  .price-card:hover { transform: translateY(-5px); }
+  .price-card.featured {
+    background: linear-gradient(160deg, #172b1e 0%, #112018 100%);
+    border-color: rgba(61,255,160,0.4);
+    position: relative; transform: translateY(-10px);
+    box-shadow: 0 0 50px rgba(61,255,160,0.15);
+  }
+  .price-card.featured:hover { transform: translateY(-15px); }
+  .featured-badge {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(90deg, var(--green), var(--blue));
+    color: #0a0f0d; font-size: 0.72rem; font-weight: 600;
+    padding: 0.3rem 1rem; border-radius: 100px; white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+  .plan-name {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 1.1rem; margin-bottom: 0.5rem;
+  }
+  .plan-desc { color: var(--muted); font-size: 0.88rem; margin-bottom: 1.5rem; }
+  .plan-price {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 2.6rem; color: var(--white);
+  }
+  .plan-price span { font-size: 1rem; color: var(--muted); font-weight: 400; }
+  .plan-features {
+    list-style: none; margin: 1.5rem 0 2rem;
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .plan-features li {
+    display: flex; align-items: center; gap: 0.7rem;
+    font-size: 0.9rem; color: var(--muted);
+  }
+  .plan-features li::before {
+    content: '✓'; color: var(--green);
+    font-size: 0.85rem; flex-shrink: 0;
+  }
+  .plan-features li.disabled { opacity: 0.35; }
+  .plan-features li.disabled::before { content: '✕'; color: var(--muted); }
+
+  /* ── CTA STRIP ── */
+  .cta-strip {
+    background: var(--surface);
+    padding: 4rem 5vw;
+    text-align: center;
+  }
+  .cta-box {
+    max-width: 680px; margin: 0 auto;
+    background: linear-gradient(135deg, rgba(61,255,160,0.08), rgba(56,212,245,0.05));
+    border: 1px solid rgba(61,255,160,0.25);
+    border-radius: 28px; padding: 3.5rem 2rem;
+  }
+  .cta-box h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+  .cta-box p { color: var(--muted); margin: 1rem 0 2rem; font-size: 1rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2rem 5vw;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+    color: var(--muted); font-size: 0.82rem;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; text-align: center; }
+    .hero-sub, .hero-actions { margin-left: auto; margin-right: auto; }
+    .hero-actions { justify-content: center; }
+    .hero-stats { justify-content: center; }
+    .hero-visual { display: none; }
+    .services-grid, .testi-grid, .pricing-grid { grid-template-columns: 1fr; }
+    .price-card.featured { transform: none; }
+    .steps { flex-direction: column; gap: 2rem; }
+    .steps::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Fresh<span>Bin</span></div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="freshbin-pricing.html">Pricing</a></li>
+    <li><a href="freshbin-pricing.html#book" class="nav-cta">Book Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Now serving Toronto & GTA
+      </div>
+      <h1>Make Your Bins<br><em>Smell Fresh</em><br>Again.</h1>
+      <p class="hero-sub">Professional bin cleaning and sanitization delivered to your door. Kill 99.9% of bacteria — without you lifting a finger.</p>
+      <div class="hero-actions">
+        <a href="freshbin-pricing.html" class="btn-primary">Book a Cleaning</a>
+        <a href="#how" class="btn-secondary">See How It Works</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">5,200+</div>
+          <div class="stat-label">Bins cleaned</div>
+        </div>
+        <div>
+          <div class="stat-num">99.9%</div>
+          <div class="stat-label">Bacteria eliminated</div>
+        </div>
+        <div>
+          <div class="stat-num">4.9★</div>
+          <div class="stat-label">Average rating</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="bin-graphic">
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="bin-handle"></div>
+        <div class="bin-lid"></div>
+        <div class="bin-body">
+          <div class="bin-stripe"></div>
+          <div class="bin-stripe"></div>
+          <div class="bin-stripe"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-inner">
+    <div class="section-label">What We Offer</div>
+    <h2>Clean for every need.</h2>
+    <p class="section-sub">Whether you're a homeowner or a business, we have a service that keeps your bins spotless year-round.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="svc-icon">🏠</div>
+        <div class="svc-title">Residential Cleaning</div>
+        <div class="svc-desc">Full interior and exterior pressure wash of your curbside bins using eco-certified products. Scheduled on your collection day.</div>
+        <div class="svc-tag">One-time or recurring</div>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">🔄</div>
+        <div class="svc-title">Subscription Plans</div>
+        <div class="svc-desc">Monthly or bi-monthly cleanings at a discounted rate. Set it and forget it — we track your schedule automatically.</div>
+        <div class="svc-tag">Best value</div>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">💧</div>
+        <div class="svc-title">Deep Sanitization</div>
+        <div class="svc-desc">Hot-water high-pressure treatment with hospital-grade, biodegradable sanitizer. Eliminates mold, maggots, and odors completely.</div>
+        <div class="svc-tag">Industrial strength</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-inner">
+    <div class="section-label">Process</div>
+    <h2>Clean in three easy steps.</h2>
+    <p class="section-sub">We handle everything. Just leave your bins at the curb.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Book Online</div>
+        <div class="step-desc">Choose your service, pick a date, and check out in under two minutes.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">We Roll Up</div>
+        <div class="step-desc">Our truck arrives on your collection morning and cleans your bins right at the curb.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Freshness Guaranteed</div>
+        <div class="step-desc">Bins are returned spotless. You get a before/after photo report by text.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-inner">
+    <div class="section-label">Testimonials</div>
+    <h2>Neighbours who switched.</h2>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <div class="testi-text">"Our bins used to smell terrible every summer. FreshBin completely solved it. The deep sanitization package is genuinely impressive — like new bins."</div>
+        <div class="testi-author">
+          <div class="avatar" style="background: linear-gradient(135deg, #3dffa0, #38d4f5);">SK</div>
+          <div>
+            <div class="author-name">Sarah K.</div>
+            <div class="author-loc">North York, Toronto</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <div class="testi-text">"Signed up for the monthly plan and haven't thought about my bins since. Worth every penny. They even send a photo after each clean."</div>
+        <div class="testi-author">
+          <div class="avatar" style="background: linear-gradient(135deg, #38d4f5, #27c97a);">MR</div>
+          <div>
+            <div class="author-name">Marcus R.</div>
+            <div class="author-loc">Etobicoke, Toronto</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <div class="testi-text">"I manage a small apartment complex and FreshBin handles all 12 bins on a bi-monthly plan. Tenants actually complimented the smell. Huge win."</div>
+        <div class="testi-author">
+          <div class="avatar" style="background: linear-gradient(135deg, #27c97a, #3dffa0);">JP</div>
+          <div>
+            <div class="author-name">Julie P.</div>
+            <div class="author-loc">Scarborough, Toronto</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-inner">
+    <div class="section-label">Pricing</div>
+    <h2>Transparent, no-surprise pricing.</h2>
+    <p class="section-sub">All plans include eco-certified cleaning products and a photo report.</p>
+    <div class="pricing-grid">
+
+      <div class="price-card">
+        <div class="plan-name">One-Time</div>
+        <div class="plan-desc">Perfect for a seasonal refresh or first clean.</div>
+        <div class="plan-price">$20<span>/bin</span></div>
+        <ul class="plan-features">
+          <li>Interior pressure wash</li>
+          <li>Exterior scrub & rinse</li>
+          <li>Deodorizer applied</li>
+          <li>Before/after photo report</li>
+          <li class="disabled">Priority scheduling</li>
+          <li class="disabled">Bacteria report</li>
+        </ul>
+        <a href="freshbin-pricing.html" class="btn-secondary" style="width:100%; text-align:center;">Book Once</a>
+      </div>
+
+      <div class="price-card featured">
+        <div class="featured-badge">⚡ Most Popular</div>
+        <div class="plan-name">Monthly Plan</div>
+        <div class="plan-desc">Stay fresh all year, automatically.</div>
+        <div class="plan-price">$28<span>/bin/mo</span></div>
+        <ul class="plan-features">
+          <li>Interior pressure wash</li>
+          <li>Exterior scrub & rinse</li>
+          <li>Deodorizer applied</li>
+          <li>Before/after photo report</li>
+          <li>Priority scheduling</li>
+          <li>Bacteria report included</li>
+        </ul>
+        <a href="freshbin-pricing.html" class="btn-primary" style="width:100%; text-align:center;">Start Subscription</a>
+      </div>
+
+      <div class="price-card">
+        <div class="plan-name">Deep Clean</div>
+        <div class="plan-desc">Hospital-grade sanitization for serious situations.</div>
+        <div class="plan-price">$49<span>/bin</span></div>
+        <ul class="plan-features">
+          <li>Hot-water pressure blast</li>
+          <li>Hospital-grade sanitizer</li>
+          <li>Mold & maggot treatment</li>
+          <li>Before/after photo report</li>
+          <li>Priority scheduling</li>
+          <li>Bacteria report included</li>
+        </ul>
+        <a href="freshbin-pricing.html" class="btn-secondary" style="width:100%; text-align:center;">Book Deep Clean</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA STRIP -->
+<section class="cta-strip">
+  <div class="cta-box">
+    <div class="section-label" style="text-align:center;">Ready?</div>
+    <h2>Your bins deserve better.</h2>
+    <p>Join thousands of neighbours who stopped tolerating smelly bins. First clean is satisfaction-guaranteed or your money back.</p>
+    <a href="freshbin-pricing.html" class="btn-primary">Book Your First Clean →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Fresh<span>Bin</span></div>
+  <div style="color: var(--muted); font-size: 0.8rem;">© 2026 FreshBin Inc. Toronto, ON · Eco-certified cleaning products · 100% satisfaction guarantee</div>
+  <div style="display:flex; gap: 1.5rem;">
+    <a href="#" style="color:var(--muted); text-decoration:none; font-size:0.82rem;">Privacy</a>
+    <a href="#" style="color:var(--muted); text-decoration:none; font-size:0.82rem;">Terms</a>
+    <a href="#" style="color:var(--muted); text-decoration:none; font-size:0.82rem;">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.service-card, .testi-card, .price-card, .step').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+
+  // Smooth nav link highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--white)' : '';
+    });
+  });
+</script>
+</body>
+</html>
