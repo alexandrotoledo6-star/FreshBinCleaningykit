@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreshBin — Pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #09100d;
+  --surface: #101a13;
+  --surface2: #141f17;
+  --card: #111b14;
+  --border: rgba(255,255,255,0.07);
+  --border-green: rgba(61,255,160,0.25);
+  --green: #3dffa0;
+  --green-dim: #27c97a;
+  --blue: #38d4f5;
+  --white: #eef7f2;
+  --muted: #6b9279;
+  --muted2: #4a6b57;
+  --red: #ff6b6b;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 5vw;
+  background: rgba(9,16,13,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.35rem; letter-spacing: -0.5px; text-decoration: none; color: var(--white); }
+.logo span { color: var(--green); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+.nav-links a:hover { color: var(--white); }
+.nav-pill { background: var(--green); color: #09100d !important; padding: 0.45rem 1.1rem; border-radius: 100px; font-weight: 500 !important; transition: opacity 0.2s !important; }
+.nav-pill:hover { opacity: 0.82 !important; }
+
+/* ── HERO ── */
+.hero {
+  padding: 5rem 5vw 4rem;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.hero-orb {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  filter: blur(80px);
+}
+.orb1 { width: 500px; height: 500px; background: rgba(61,255,160,0.09); top: -150px; left: 50%; transform: translateX(-50%); }
+.orb2 { width: 300px; height: 300px; background: rgba(56,212,245,0.07); bottom: -100px; right: 5%; }
+
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(61,255,160,0.08); border: 1px solid var(--border-green);
+  color: var(--green); padding: 0.3rem 1rem; border-radius: 100px;
+  font-size: 0.8rem; font-weight: 500; margin-bottom: 1.5rem;
+  animation: fadeUp 0.5s ease both;
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  letter-spacing: -1.5px; line-height: 1.1;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(130deg, var(--green), var(--blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-sub {
+  margin: 1.2rem auto 0; max-width: 500px;
+  color: var(--muted); font-size: 1rem;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+.billing-toggle {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 100px; padding: 0.35rem; margin-top: 2.5rem;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+.toggle-btn {
+  padding: 0.5rem 1.4rem; border-radius: 100px; border: none;
+  background: transparent; color: var(--muted);
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 400;
+  cursor: pointer; transition: all 0.2s;
+}
+.toggle-btn.active { background: var(--green); color: #09100d; font-weight: 500; }
+.save-badge {
+  background: rgba(61,255,160,0.15); color: var(--green);
+  font-size: 0.72rem; font-weight: 500; padding: 0.2rem 0.6rem;
+  border-radius: 100px; margin-left: 0.3rem;
+}
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px);} to {opacity:1;transform:translateY(0);} }
+
+/* ── PRICING CARDS ── */
+.pricing-section { padding: 3rem 5vw 5rem; }
+.pricing-inner { max-width: 1100px; margin: 0 auto; }
+.cards-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem;
+  align-items: end;
+}
+.pcard {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 22px; padding: 2rem;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+  position: relative;
+}
+.pcard:hover { transform: translateY(-4px); }
+.pcard.featured {
+  background: linear-gradient(160deg, #162b1e 0%, #0f1e14 100%);
+  border-color: var(--border-green);
+  transform: translateY(-14px);
+  box-shadow: 0 0 60px rgba(61,255,160,0.12);
+}
+.pcard.featured:hover { transform: translateY(-18px); }
+.featured-tag {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  color: #09100d; font-size: 0.7rem; font-weight: 700;
+  padding: 0.28rem 1rem; border-radius: 100px; white-space: nowrap;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+.plan-icon { font-size: 1.6rem; margin-bottom: 1rem; }
+.plan-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.15rem; }
+.plan-tagline { color: var(--muted); font-size: 0.85rem; margin-top: 0.25rem; margin-bottom: 1.4rem; }
+.plan-price-row { display: flex; align-items: baseline; gap: 0.3rem; }
+.price-amount { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2.8rem; color: var(--white); }
+.price-unit { color: var(--muted); font-size: 0.88rem; }
+.price-annual { display: none; }
+.annual-mode .price-monthly { display: none; }
+.annual-mode .price-annual { display: flex; }
+.savings-line {
+  font-size: 0.78rem; color: var(--green);
+  margin-top: 0.3rem; min-height: 1.2rem;
+  display: none;
+}
+.annual-mode .savings-line { display: block; }
+.divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+.features-list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1.8rem; }
+.features-list li { display: flex; align-items: flex-start; gap: 0.65rem; font-size: 0.9rem; color: var(--muted); }
+.features-list li .chk { color: var(--green); font-size: 0.85rem; margin-top: 0.1rem; flex-shrink: 0; }
+.features-list li.off { opacity: 0.32; }
+.features-list li.off .chk { color: var(--muted2); }
+.btn-plan {
+  width: 100%; padding: 0.85rem; border-radius: 100px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--white); font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem; font-weight: 400; cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-plan:hover { border-color: var(--green); background: rgba(61,255,160,0.06); }
+.btn-plan.primary {
+  background: var(--green); color: #09100d; border-color: var(--green); font-weight: 500;
+  box-shadow: 0 0 30px rgba(61,255,160,0.25);
+}
+.btn-plan.primary:hover { box-shadow: 0 0 45px rgba(61,255,160,0.4); background: #55ffb0; }
+
+/* ── ADD-ONS ── */
+.addons-section { padding: 2rem 5vw 5rem; }
+.section-label { font-size: 0.75rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 0.6rem; }
+h2 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: clamp(1.6rem, 2.5vw, 2.2rem); letter-spacing: -0.8px; }
+.section-sub { color: var(--muted); font-size: 0.95rem; margin-top: 0.5rem; max-width: 480px; }
+.addons-inner { max-width: 1100px; margin: 0 auto; }
+.addons-grid {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-top: 2.5rem;
+}
+.addon-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.4rem;
+  cursor: pointer; transition: all 0.2s; user-select: none;
+  position: relative;
+}
+.addon-card:hover { border-color: rgba(61,255,160,0.2); }
+.addon-card.selected { border-color: var(--border-green); background: rgba(61,255,160,0.05); }
+.addon-card.selected::after {
+  content: '✓'; position: absolute; top: 0.75rem; right: 0.9rem;
+  color: var(--green); font-size: 0.85rem; font-weight: 600;
+}
+.addon-emoji { font-size: 1.4rem; margin-bottom: 0.7rem; }
+.addon-name { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.3rem; }
+.addon-desc { color: var(--muted); font-size: 0.8rem; line-height: 1.5; }
+.addon-price { color: var(--green); font-weight: 500; font-size: 0.88rem; margin-top: 0.8rem; }
+
+.addons-total {
+  margin-top: 1.5rem; padding: 1.2rem 1.6rem;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 14px; display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+}
+.total-label { color: var(--muted); font-size: 0.88rem; }
+.total-amount { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.4rem; color: var(--green); }
+.btn-addons {
+  background: var(--green); color: #09100d;
+  border: none; padding: 0.7rem 1.8rem; border-radius: 100px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+  cursor: pointer; transition: opacity 0.2s;
+}
+.btn-addons:hover { opacity: 0.85; }
+
+/* ── COMPARISON TABLE ── */
+.compare-section { padding: 2rem 5vw 5rem; }
+.compare-inner { max-width: 1100px; margin: 0 auto; }
+.compare-table { width: 100%; border-collapse: collapse; margin-top: 2.5rem; }
+.compare-table th {
+  padding: 1.1rem 1.4rem; text-align: left;
+  font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.95rem;
+  border-bottom: 1px solid var(--border);
+}
+.compare-table th:not(:first-child) { text-align: center; }
+.th-featured { color: var(--green); }
+.compare-table td {
+  padding: 0.95rem 1.4rem; font-size: 0.9rem; color: var(--muted);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.compare-table td:not(:first-child) { text-align: center; }
+.compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+.compare-table .row-label { color: var(--white); font-weight: 400; }
+.yes { color: var(--green); font-size: 1rem; }
+.no { color: var(--muted2); font-size: 1rem; }
+.col-featured td { background: rgba(61,255,160,0.03); }
+.cat-row td {
+  background: var(--surface); color: var(--green);
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 0.6rem 1.4rem;
+}
+
+/* ── BOOKING FORM ── */
+.booking-section { padding: 2rem 5vw 5rem; }
+.booking-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+}
+.booking-left { position: sticky; top: 80px; }
+.booking-left h2 { margin-bottom: 0.8rem; }
+.booking-left p { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
+.booking-perks { display: flex; flex-direction: column; gap: 1rem; }
+.perk { display: flex; align-items: flex-start; gap: 0.8rem; }
+.perk-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: rgba(61,255,160,0.08); border: 1px solid var(--border-green);
+  display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;
+}
+.perk-text { font-size: 0.88rem; color: var(--muted); }
+.perk-text strong { color: var(--white); font-weight: 500; display: block; margin-bottom: 0.1rem; }
+
+.form-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 22px; padding: 2.2rem;
+}
+.form-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 1.8rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+.form-group label { font-size: 0.8rem; font-weight: 500; color: var(--muted); letter-spacing: 0.3px; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 0.7rem 1rem;
+  color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+  transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+  -webkit-appearance: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--border-green);
+  box-shadow: 0 0 0 3px rgba(61,255,160,0.08);
+}
+.form-group textarea { resize: vertical; min-height: 90px; }
+.form-group select option { background: #111b14; }
+.bin-counter {
+  display: flex; align-items: center; gap: 1rem;
+}
+.counter-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--white); font-size: 1.1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+.counter-btn:hover { border-color: var(--green); background: rgba(61,255,160,0.07); }
+.counter-val { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.3rem; min-width: 30px; text-align: center; }
+.estimate-line {
+  font-size: 0.82rem; color: var(--green); margin-top: 0.3rem;
+}
+.form-divider { height: 1px; background: var(--border); margin: 1.2rem 0; }
+.form-submit {
+  width: 100%; padding: 0.95rem; border-radius: 100px;
+  border: none; background: var(--green); color: #09100d;
+  font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 0 30px rgba(61,255,160,0.25);
+}
+.form-submit:hover { box-shadow: 0 0 50px rgba(61,255,160,0.4); background: #55ffb0; }
+.form-note { text-align: center; font-size: 0.78rem; color: var(--muted2); margin-top: 0.8rem; }
+
+/* success state */
+.form-success {
+  display: none; text-align: center; padding: 3rem 1rem;
+}
+.form-success .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+.form-success h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.4rem; margin-bottom: 0.5rem; }
+.form-success p { color: var(--muted); font-size: 0.92rem; }
+
+/* ── FAQ ── */
+.faq-section { padding: 2rem 5vw 6rem; }
+.faq-inner { max-width: 720px; margin: 0 auto; }
+.faq-inner h2 { text-align: center; }
+.faq-inner .section-label { text-align: center; }
+.faq-inner .section-sub { text-align: center; margin: 0.5rem auto 2.5rem; }
+.faq-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.faq-item {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden; transition: border-color 0.2s;
+}
+.faq-item.open { border-color: rgba(61,255,160,0.2); }
+.faq-q {
+  width: 100%; text-align: left; background: none; border: none;
+  padding: 1.2rem 1.4rem; color: var(--white); font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; font-weight: 400; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+}
+.faq-arrow { color: var(--muted); font-size: 0.8rem; transition: transform 0.3s; flex-shrink: 0; }
+.faq-item.open .faq-arrow { transform: rotate(180deg); color: var(--green); }
+.faq-a {
+  max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+}
+.faq-item.open .faq-a { max-height: 300px; }
+.faq-a-inner { padding: 0 1.4rem 1.2rem; color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+
+/* ── FOOTER ── */
+footer {
+  padding: 1.8rem 5vw;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+  color: var(--muted2); font-size: 0.8rem;
+}
+footer a { color: var(--muted); text-decoration: none; }
+footer a:hover { color: var(--white); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .cards-grid { grid-template-columns: 1fr; }
+  .pcard.featured { transform: none; }
+  .addons-grid { grid-template-columns: 1fr 1fr; }
+  .booking-inner { grid-template-columns: 1fr; }
+  .booking-left { position: static; }
+  .form-row { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+}
+@media (max-width: 600px) {
+  .addons-grid { grid-template-columns: 1fr; }
+  .compare-table { font-size: 0.82rem; }
+  .compare-table th, .compare-table td { padding: 0.75rem 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="freshbin.html" class="logo">Fresh<span>Bin</span></a>
+  <ul class="nav-links">
+    <li><a href="freshbin.html">← Back to Home</a></li>
+    <li><a href="#addons">Add-ons</a></li>
+    <li><a href="#compare">Compare</a></li>
+    <li><a href="#book">Book Now</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#book" class="nav-pill">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-pill">💧 Transparent pricing, no surprises</div>
+  <h1>Simple plans for<br><em>every bin situation.</em></h1>
+  <p class="hero-sub">Four people. One mission. Spotless, sanitized bins for every home in the GTA.</p>
+  <div class="billing-toggle" id="billingToggle">
+    <button class="toggle-btn active" id="btnMonthly" onclick="setBilling('monthly')">Monthly</button>
+    <button class="toggle-btn" id="btnAnnual" onclick="setBilling('annual')">Annual <span class="save-badge">Save 15%</span></button>
+  </div>
+</div>
+
+<!-- PRICING CARDS -->
+<section class="pricing-section">
+  <div class="pricing-inner">
+    <div class="cards-grid" id="cardsGrid">
+
+      <!-- One-Time -->
+      <div class="pcard">
+        <div class="plan-icon">🗑️</div>
+        <div class="plan-name">One-Time</div>
+        <div class="plan-tagline">Quick refresh, no commitment.</div>
+        <div class="plan-price-row price-monthly">
+          <div class="price-amount">$20</div>
+          <div class="price-unit">/ bin</div>
+        </div>
+        <div class="plan-price-row price-annual">
+          <div class="price-amount">$17</div>
+          <div class="price-unit">/ bin</div>
+        </div>
+        <div class="savings-line">You save $3/bin vs monthly</div>
+        <div class="divider"></div>
+        <ul class="features-list">
+          <li><span class="chk">✓</span> Interior pressure wash</li>
+          <li><span class="chk">✓</span> Exterior scrub & rinse</li>
+          <li><span class="chk">✓</span> Eco deodorizer applied</li>
+          <li><span class="chk">✓</span> Before/after photo report</li>
+          <li class="off"><span class="chk">✕</span> Priority scheduling</li>
+          <li class="off"><span class="chk">✕</span> Bacteria test report</li>
+          <li class="off"><span class="chk">✕</span> Free re-clean guarantee</li>
+        </ul>
+        <button class="btn-plan" onclick="selectPlan('One-Time')">Book One-Time Clean</button>
+      </div>
+
+      <!-- Pro Monthly — FEATURED -->
+      <div class="pcard featured">
+        <div class="featured-tag">⚡ Most Popular</div>
+        <div class="plan-icon">🔄</div>
+        <div class="plan-name">Pro Monthly</div>
+        <div class="plan-tagline">Stay fresh automatically, all year.</div>
+        <div class="plan-price-row price-monthly">
+          <div class="price-amount">$28</div>
+          <div class="price-unit">/ bin / mo</div>
+        </div>
+        <div class="plan-price-row price-annual">
+          <div class="price-amount">$24</div>
+          <div class="price-unit">/ bin / mo</div>
+        </div>
+        <div class="savings-line">You save $48/bin per year</div>
+        <div class="divider"></div>
+        <ul class="features-list">
+          <li><span class="chk">✓</span> Interior pressure wash</li>
+          <li><span class="chk">✓</span> Exterior scrub & rinse</li>
+          <li><span class="chk">✓</span> Eco deodorizer applied</li>
+          <li><span class="chk">✓</span> Before/after photo report</li>
+          <li><span class="chk">✓</span> Priority scheduling</li>
+          <li><span class="chk">✓</span> Bacteria test report</li>
+          <li><span class="chk">✓</span> Free re-clean guarantee</li>
+        </ul>
+        <button class="btn-plan primary" onclick="selectPlan('Pro Monthly')">Start Pro Subscription</button>
+      </div>
+
+      <!-- Deep Clean -->
+      <div class="pcard">
+        <div class="plan-icon">🧪</div>
+        <div class="plan-name">Deep Sanitization</div>
+        <div class="plan-tagline">Hospital-grade. Zero compromise.</div>
+        <div class="plan-price-row price-monthly">
+          <div class="price-amount">$49</div>
+          <div class="price-unit">/ bin</div>
+        </div>
+        <div class="plan-price-row price-annual">
+          <div class="price-amount">$42</div>
+          <div class="price-unit">/ bin</div>
+        </div>
+        <div class="savings-line">You save $7/bin vs monthly rate</div>
+        <div class="divider"></div>
+        <ul class="features-list">
+          <li><span class="chk">✓</span> Hot-water pressure blast</li>
+          <li><span class="chk">✓</span> Hospital-grade sanitizer</li>
+          <li><span class="chk">✓</span> Mold & maggot treatment</li>
+          <li><span class="chk">✓</span> Before/after photo report</li>
+          <li><span class="chk">✓</span> Priority scheduling</li>
+          <li><span class="chk">✓</span> Full bacteria test report</li>
+          <li><span class="chk">✓</span> Free re-clean guarantee</li>
+        </ul>
+        <button class="btn-plan" onclick="selectPlan('Deep Sanitization')">Book Deep Clean</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ADD-ONS -->
+<section class="addons-section" id="addons">
+  <div class="addons-inner">
+    <div class="section-label">Customize Your Clean</div>
+    <h2>Power up with add-ons.</h2>
+    <p class="section-sub">Pick any extras to build the perfect clean for your situation.</p>
+    <div class="addons-grid" id="addonsGrid">
+      <div class="addon-card" data-price="8" onclick="toggleAddon(this)">
+        <div class="addon-emoji">🌿</div>
+        <div class="addon-name">Odor Shield</div>
+        <div class="addon-desc">Long-lasting botanical fragrance coating that repels future odors for up to 30 days.</div>
+        <div class="addon-price">+ $8 / bin</div>
+      </div>
+      <div class="addon-card" data-price="12" onclick="toggleAddon(this)">
+        <div class="addon-emoji">🦟</div>
+        <div class="addon-name">Bug Barrier</div>
+        <div class="addon-desc">Pet-safe insect-repellent treatment to stop flies and bugs from nesting in your bins.</div>
+        <div class="addon-price">+ $12 / bin</div>
+      </div>
+      <div class="addon-card" data-price="15" onclick="toggleAddon(this)">
+        <div class="addon-emoji">📸</div>
+        <div class="addon-name">Premium Report</div>
+        <div class="addon-desc">Full bacteria culture report with detailed before/after lab results emailed to you.</div>
+        <div class="addon-price">+ $15 / visit</div>
+      </div>
+      <div class="addon-card" data-price="20" onclick="toggleAddon(this)">
+        <div class="addon-emoji">⚡</div>
+        <div class="addon-name">Same-Day Rush</div>
+        <div class="addon-desc">Skip the queue and get your bins cleaned the same day, regardless of collection day.</div>
+        <div class="addon-price">+ $20 flat</div>
+      </div>
+    </div>
+    <div class="addons-total">
+      <div>
+        <div class="total-label">Selected add-ons total</div>
+        <div class="total-amount" id="addonsTotal">$0</div>
+      </div>
+      <button class="btn-addons" onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'})">Add to Booking →</button>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="compare-section" id="compare">
+  <div class="compare-inner">
+    <div class="section-label">Side by Side</div>
+    <h2>Everything compared.</h2>
+    <p class="section-sub">See exactly what each plan includes before you commit.</p>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:34%">Feature</th>
+          <th>One-Time<br><small style="color:var(--muted);font-family:'DM Sans';font-weight:300">$20/bin</small></th>
+          <th class="th-featured">Pro Monthly<br><small style="color:var(--green);font-family:'DM Sans';font-weight:300">$28/bin/mo</small></th>
+          <th>Deep Clean<br><small style="color:var(--muted);font-family:'DM Sans';font-weight:300">$49/bin</small></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="cat-row"><td colspan="4">Cleaning</td></tr>
+        <tr>
+          <td class="row-label">Interior pressure wash</td>
+          <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td>
+        </tr>
+        <tr>
+          <td class="row-label">Exterior scrub & rinse</td>
+          <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td>
+        </tr>
+        <tr>
+          <td class="row-label">Hot-water blast (180°F)</td>
+          <td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="yes">✓</span></td>
+        </tr>
+        <tr>
+          <td class="row-label">Mold & maggot treatment</td>
+          <td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="yes">✓</span></td>
+        </tr>
+        <tr class="cat-row"><td colspan="4">Sanitization</td></tr>
+        <tr>
+          <td class="row-label">Eco deodorizer</td>
+          <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td>
+        </tr>
+        <tr>
+          <td class="row-label">Hospital-grade sanitizer</td>
+          <td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="yes">✓</span></td>
+        </tr>
+        <tr>
+          <td class="row-label">99.9% bacteria kill rate</td>
+          <td>~95%</td><td>~95%</td><td><span class="yes">99.9%</span></td>
+        </tr>
+        <tr class="cat-row"><td colspan="4">Service & Reporting</td></tr>
+        <tr>
+          <td class="row-label">Before/after photos</td>
+          <td><span class="yes">✓</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td>
+        </tr>
+        <tr>
+          <td class="row-label">Bacteria test report</td>
+          <td><span class="no">—</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td>
+        </tr>
+        <tr>
+          <td class="row-label">Priority scheduling</td>
+          <td><span class="no">—</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td>
+        </tr>
+        <tr>
+          <td class="row-label">Free re-clean guarantee</td>
+          <td><span class="no">—</span></td><td><span class="yes">✓</span></td><td><span class="yes">✓</span></td>
+        </tr>
+        <tr>
+          <td class="row-label">Auto-schedule on bin day</td>
+          <td><span class="no">—</span></td><td><span class="yes">✓</span></td><td><span class="no">—</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- BOOKING FORM -->
+<section class="booking-section" id="book">
+  <div class="booking-inner">
+    <div class="booking-left">
+      <div class="section-label">Ready to Book</div>
+      <h2>Let's get those bins clean.</h2>
+      <p>Fill in your details and we'll reach out within 2 hours to confirm your appointment. No credit card required upfront.</p>
+      <div class="booking-perks">
+        <div class="perk">
+          <div class="perk-icon">📞</div>
+          <div class="perk-text"><strong>Confirmation in 2 hours</strong>We'll call or text to lock in your date.</div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">🔄</div>
+          <div class="perk-text"><strong>Free cancellation</strong>Cancel or reschedule up to 24 hours before, no charge.</div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">💳</div>
+          <div class="perk-text"><strong>Pay after the clean</strong>We only charge once you're satisfied with the result.</div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">🌱</div>
+          <div class="perk-text"><strong>Eco-certified products</strong>Safe for kids, pets, and the environment.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div id="formContent">
+        <div class="form-title">Book Your Clean</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="fname" name="first_name" placeholder="Jane">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="lname" name="last_name" placeholder="Smith">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="email" name="email" placeholder="jane@example.com">
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="(416) 555-0199">
+        </div>
+
+        <div class="form-group">
+          <label>Address / Postal Code</label>
+          <input type="text" id="address" name="address" placeholder="123 Maple St, Toronto, ON">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Service Plan</label>
+            <select id="plan" name="service_plan">
+              <option value="">Select a plan…</option>
+              <option value="One-Time — $20/bin">One-Time — $20/bin</option>
+              <option value="Pro Monthly — $28/bin/mo">Pro Monthly — $28/bin/mo</option>
+              <option value="Deep Sanitization — $49/bin">Deep Sanitization — $49/bin</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Preferred Date</label>
+            <input type="date" id="date" name="preferred_date">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Number of Bins</label>
+          <div class="bin-counter">
+            <button type="button" class="counter-btn" onclick="changeBins(-1)">−</button>
+            <div class="counter-val" id="binCount">1</div>
+            <button type="button" class="counter-btn" onclick="changeBins(1)">+</button>
+          </div>
+          <input type="hidden" id="binCountHidden" name="number_of_bins" value="1">
+          <div class="estimate-line" id="estimateLine">Estimated: $20</div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <div class="form-group">
+          <label>Special Instructions (optional)</label>
+          <textarea id="notes" name="special_instructions" placeholder="e.g. gate code, type of bins, extra soiled bins…"></textarea>
+        </div>
+
+        <button type="button" class="form-submit" onclick="submitForm()">Request Booking →</button>
+        <div class="form-note">🔒 Your info is never shared. We hate spam too.</div>
+      </div>
+
+      <div class="form-success" id="formSuccess">
+        <div class="success-icon">✅</div>
+        <h3>Booking Request Sent!</h3>
+        <p>Thanks! We'll reach out within 2 hours to confirm your appointment. Check your inbox for a confirmation email.</p>
+        <br>
+        <button class="btn-plan" onclick="resetForm()" style="max-width:220px;margin:0 auto;display:block;">Book Another Clean</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="faq-inner">
+    <div class="section-label">FAQ</div>
+    <h2>Questions answered.</h2>
+    <p class="section-sub">Everything you need to know before booking your first clean.</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How does the cleaning actually work?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Our truck arrives on your collection morning (while your bins are already at the curb). We pressure-wash the inside and outside with hot water and eco-certified cleaning agents, apply a deodorizer, and return the bins spotless. You get a before/after photo via text — the whole process takes about 5 minutes per bin.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Do I need to be home for the service?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Not at all! Just leave your bins at the curb on your normal collection day. We'll handle everything and let you know once it's done. If you have a gate or special access, just leave a note in the booking form.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What areas do you serve?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">We currently serve Toronto and the greater GTA including North York, Scarborough, Etobicoke, Mississauga, and Brampton. Not sure if you're in our zone? Enter your postal code in the booking form and we'll confirm within 2 hours.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What's the difference between the Pro plan and the Deep Sanitization?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">The Pro Monthly plan is your regular recurring clean — great for keeping bins fresh year-round. Deep Sanitization is an intensive one-time treatment using hospital-grade chemicals and 180°F hot water, designed for severely soiled bins, heavy mold, maggot infestations, or post-summer deep cleans. Many customers do a Deep Clean first, then switch to Pro Monthly to maintain it.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Are your cleaning products safe for kids and pets?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Yes — all our products are eco-certified, biodegradable, and non-toxic once dried. We use hospital-grade sanitizers only on Deep Sanitization cleans, and even those are fully safe once the bin has air-dried (about 20 minutes). No harsh residue is left behind.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How do I cancel or pause my Pro Monthly subscription?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Super easy. Just text or email us anytime — no portals, no forms. We're a small team and we'll handle it personally, same day. You won't be charged for any future cleanings after cancellation, and there are no cancellation fees whatsoever.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What if I'm not happy with the clean?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Pro Monthly and Deep Sanitization plans include a free re-clean guarantee. If you're not satisfied, just let us know within 48 hours and we'll come back out at no charge. For One-Time cleans, we'll always work with you to make it right — our reputation depends on it.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="freshbin.html" class="logo" style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;">Fresh<span style="color:var(--green)">Bin</span></a>
+  <div>© 2026 FreshBin Inc. · Toronto, ON · A proud 4-person local team 💚</div>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="/cdn-cgi/l/email-protection#6f070a0303002f091d0a1c070d0601410c0e"><span class="__cf_email__" data-cfemail="0d65686161624d6b7f687e656f6463236e6c">[email&#160;protected]</span></a>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── BILLING TOGGLE ──
+let billingMode = 'monthly';
+function setBilling(mode) {
+  billingMode = mode;
+  document.getElementById('btnMonthly').classList.toggle('active', mode === 'monthly');
+  document.getElementById('btnAnnual').classList.toggle('active', mode === 'annual');
+  document.querySelectorAll('.cards-grid').forEach(g => {
+    g.classList.toggle('annual-mode', mode === 'annual');
+  });
+  updateEstimate();
+}
+
+// ── PLAN SELECT (scrolls to form) ──
+function selectPlan(name) {
+  const planMap = { 'One-Time': 'one-time', 'Pro Monthly': 'pro', 'Deep Sanitization': 'deep' };
+  const sel = document.getElementById('plan');
+  if (planMap[name]) sel.value = planMap[name];
+  document.getElementById('book').scrollIntoView({ behavior: 'smooth' });
+  updateEstimate();
+}
+
+// ── BIN COUNTER ──
+let binCount = 1;
+function changeBins(delta) {
+  binCount = Math.max(1, Math.min(20, binCount + delta));
+  document.getElementById('binCount').textContent = binCount;
+  updateEstimate();
+}
+
+const prices = { 'One-Time — $20/bin': 20, 'Pro Monthly — $28/bin/mo': 28, 'Deep Sanitization — $49/bin': 49 };
+const annualPrices = { 'One-Time — $20/bin': 17, 'Pro Monthly — $28/bin/mo': 24, 'Deep Sanitization — $49/bin': 42 };
+
+function updateEstimate() {
+  const plan = document.getElementById('plan').value;
+  if (!plan) { document.getElementById('estimateLine').textContent = 'Select a plan above'; return; }
+  const p = billingMode === 'annual' ? annualPrices[plan] : prices[plan];
+  const total = p * binCount;
+  const isMonthly = plan.includes('Monthly');
+  const suffix = isMonthly ? '/mo' : '';
+  document.getElementById('estimateLine').textContent = `Estimated: $${total}${suffix}`;
+}
+document.getElementById('plan').addEventListener('change', updateEstimate);
+
+// ── ADD-ONS ──
+let addonTotal = 0;
+function toggleAddon(el) {
+  el.classList.toggle('selected');
+  const price = parseInt(el.dataset.price);
+  addonTotal += el.classList.contains('selected') ? price : -price;
+  document.getElementById('addonsTotal').textContent = '$' + Math.max(0, addonTotal);
+}
+
+// ── FAQ ──
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// ── FORM SUBMIT → FORMSPREE ──
+async function submitForm() {
+  const fname = document.getElementById('fname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const plan  = document.getElementById('plan').value;
+  if (!fname || !email || !plan) {
+    alert('Please fill in your name, email, and select a plan.');
+    return;
+  }
+
+  // sync bin count into hidden field
+  document.getElementById('binCountHidden').value = binCount;
+
+  const submitBtn = document.querySelector('.form-submit');
+  submitBtn.textContent = 'Sending…';
+  submitBtn.disabled = true;
+
+  const data = {
+    first_name:           fname,
+    last_name:            document.getElementById('lname').value.trim(),
+    email:                email,
+    phone:                document.getElementById('phone').value.trim(),
+    address:              document.getElementById('address').value.trim(),
+    service_plan:         plan,
+    preferred_date:       document.getElementById('date').value,
+    number_of_bins:       binCount,
+    special_instructions: document.getElementById('notes').value.trim()
+  };
+
+  try {
+    const res = await fetch('https://formspree.io/f/xpqoojgd', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      document.getElementById('formContent').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    } else {
+      alert('Something went wrong. Please try again or email us directly.');
+      submitBtn.textContent = 'Request Booking →';
+      submitBtn.disabled = false;
+    }
+  } catch {
+    alert('Network error. Please check your connection and try again.');
+    submitBtn.textContent = 'Request Booking →';
+    submitBtn.disabled = false;
+  }
+}
+function resetForm() {
+  document.getElementById('formContent').style.display = 'block';
+  document.getElementById('formSuccess').style.display = 'none';
+  document.getElementById('fname').value = '';
+  document.getElementById('lname').value = '';
+  document.getElementById('email').value = '';
+  document.getElementById('phone').value = '';
+  document.getElementById('address').value = '';
+  document.getElementById('plan').value = '';
+  document.getElementById('date').value = '';
+  document.getElementById('notes').value = '';
+  binCount = 1;
+  document.getElementById('binCount').textContent = '1';
+  document.getElementById('estimateLine').textContent = 'Estimated: $20';
+}
+
+// ── SCROLL REVEAL ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.pcard, .addon-card, .faq-item, .perk').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+  o
